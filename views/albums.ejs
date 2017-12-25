@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>小小相册</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .row h4{
+            text-align: center;
+        }
+
+        .Mypanel{
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .messages{
+            /*margin-left: 150px;*/
+            font-size: 25px;
+        }
+
+        #form-success, #form-false {
+            display: none;
+        }
+
+        .display_messages {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .content_messages {
+            flex-direction: column;
+        }
+
+        #detail {
+            text-align: center;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+    function deletePicture(obj) {
+        // console.log(obj.id);
+        var id = obj.id;
+        var name = obj.innerHTML;
+        console.log(name);
+        $.post("/deletePicture", {
+            "picture_name": name
+        }, function(result) {
+
+        });
+    }
+    </script>
+
+
+</head>
+<body>
+
+<% include header.ejs %>
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="/">全部相册</a></li>
+        <li class="active"><%= albumName %></li>
+    </ol>
+
+
+   <div class="row">
+        <% for(var i = 0 ; i < images.length ; i++){ %>
+            <div class="col-xs-6 col-md-3" id="detail">
+                <a href="#" class="thumbnail">
+                    <img src="<%= images[i] %>" alt="">
+                </a>
+                <label>
+                    <h4 id="<%= i %>" onclick="deletePicture(this)"> <%= images[i] %> </h4>
+                    <a>删除</a>
+                </label>
+            </div>
+        <% } %>
+    </div>
+
+
+</div>
+
+<script src="/js/jquery-1.11.3.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "picture_system",
+  "version": "1.0.0",
+  "description": "picture_system",
+  "main": "app.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "ee-first": "^1.1.1",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "formidable": "^1.1.1",
+    "jquery": "^3.2.1",
+    "media-typer": "^0.3.0",
+    "mime-types": "^2.1.16",
+    "mongodb": "^2.2.26",
+    "silly-datetime": "^0.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zuo_xiong",
+  "license": "ISC"
+}

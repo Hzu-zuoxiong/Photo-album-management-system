@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>小小相册</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<style type="text/css">
+		h4 {
+			text-align: center;
+		}
+
+        #form{
+            width: 60%;
+            margin-left: 220px;
+        }
+
+        #form_success,#form_false{
+            display: none;
+        }
+
+        .comment_area {
+            border-left: 0px;
+            border-top: 0px;
+            border-right: 0px;
+            border-bottom: 1px solid #ccc;
+            font-size: 25px;
+        }
+
+        #all_comment {
+            margin-left: 200px;
+            padding: 20px;
+            font-size: 14px;
+            width: 75%
+            /*border-bottom: 1px solid #ccc;*/
+        }
+
+        hr{
+            border-bottom: 2px solid #ccc;
+        }
+
+        #big_detail{
+            height: 60px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        #detail{
+            margin-top: 6px;
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #flex{
+            float: left;
+        }
+
+        #flex p a{
+            padding-left: 1000px;
+        }
+        
+        .delete_btn {
+            margin-left: 1000px;
+            margin-bottom: 5px;
+        }
+	</style>
+
+</head>
+<body>
+
+<% include header.ejs %>
+	
+<div class="container">
+    <div class="row">
+        <form class="form-horizontal col-lg-6" id="form">
+            <div class="form-group">
+                <label for="observer" class="col-sm-2 control-label">评论者</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="observer" name="observer" placeholder="姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="observer_comment" class="col-sm-2 control-label">留言</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="3" name="observer_comment" id="observer_comment"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" id="discuss" class="btn btn-success">发表评论</button>
+                </div>
+            </div>
+            <div class="alert alert-success" role="alert" id="form_success">
+                <a href="#" class="alert-link">表单已经成功提交</a>
+            </div>
+            <div class="alert alert-danger" role="alert" id="form_false">
+                <a href="#" class="alert-link">表单提交失败</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="panel panel-default comment_area">
+        <div>
+            评论区
+            <button class="btn btn-danger delete_btn" type="submit">删除所有评论</button>
+        </div>
+
+    </div>
+
+</div>
+
+    <div id="all_comment">
+
+    </div>
+
+
+
+<!-- <script type="text/javascript" src="js/underscore-noflect.js"></script> -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+
+
+    $("#discuss").click(function () {
+        $("#form_false").hide();
+        $("#form_success").hide();
+        $.post("/submit", {
+            "observer": $("#observer").val(),
+            "observer_comment": $("#observer_comment").val()
+        }, function (result) {
+            // console.log("数据库有返回");
+            if (result.result == -1) {
+                $("#form_false").fadeIn();
+            } else if (result.result == 1) {
+                //提交成功
+                $("#form_success").fadeIn();
+                //数据库真的存储了，但是当前页面无法显示。这是因为需要刷新
+                //才能用ajax从/du中得到新的。所以我们先用一个假盒子凑出来。
+/*                var compiled = _.template($("#moban").html());
+                var html = compiled({liuyan: $("#liuyan").val(), xingming: $("#xingming").val(), shijian: new Date()});
+                $(html).insertBefore($("#quanbuliuyan"));*/
+            }
+        });
+        window.location.reload();
+    });
+
+
+    //Ajax请求数据
+    $.get("/message" ,function(result) {
+        
+        var json = eval(result.result);
+        $.each(json, function(index, item) {
+            var observer = json[index].observer;
+            var observer_comment = json[index].observer_comment;
+            var time = json[index].time;
+            var id = String(json[index]._id);
+            // console.log(id);
+            $("#all_comment").html($("#all_comment").html() + "<br><div id='big_detail'><img src='/images/head_port.jpg' />" + "<div id='detail'> 姓名：" + observer + "<br>" + "评论内容：" + observer_comment + "<br>" + "时间：" + time + "</div></div><hr>");
+        })
+    });
+
+
+
+    </script> 
+
+    <script type="text/javascript">
+    $(".delete_btn").click(function() {
+        $.post("/delete", {"delete": true}, function(result) {
+            console.log(result);
+        });
+        window.location.reload();
+    });
+    </script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

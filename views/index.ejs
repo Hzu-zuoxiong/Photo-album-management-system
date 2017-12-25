@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>小小相册</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<style type="text/css">
+		h4 {
+			text-align: center;
+		}
+
+	</style>
+</head>
+<body>
+	
+<% include header.ejs %>
+
+    <div class="container">
+        <div class="row">
+            <% for(var i = 0 ; i < albums.length ; i++){ %>
+                <div class="col-xs-6 col-md-3">
+                    <a href="<%= albums[i] %>" class="thumbnail">
+                        <img src="images/wjj.jpg" alt="...">
+                    </a>
+                    <h4><%= albums[i] %></h4>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $("#exit").click(function() {
+            $.get("/exit", {}, function(result) {
+                if(result == "1") {
+                    alter("退出登陆成功！");
+                    window.location = "/";
+                }
+            });
+        });
+
+
+    </script>
+
+</body>
+</html>
