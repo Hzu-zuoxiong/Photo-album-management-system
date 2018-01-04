@@ -41,6 +41,7 @@ exports.deleteOne = function (collectionName, json, callback) {
 };
 
 
+
 //删除集合
 exports.dropCollection = function(collectionName, callback) {
 	_connectDB(function(err, db) {

@@ -7,19 +7,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>小小相册</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	
+    <link href="css/introjs.css" rel="stylesheet">
 	<style type="text/css">
 		h4 {
 			text-align: center;
 		}
-
+        
 	</style>
 </head>
 <body>
 	
-<% include header.ejs %>
+    <!-- 引用Bootstrap模板 -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">小小相册</a>
+            </div>
 
-    <div class="container">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li <%if(active=="首页"){%> class="active" <%}%>><a href="/">全部相册</a></li>
+                    <li <%if(active=="上传"){%> class="active" <%}%>><a href="/up" class="firstUser-3">上传</a></li>
+                    <li <%if(active=="留言"){%> class="active" <%}%>><a href="/comment" class="firstUser-5">留言</a></li>
+                </ul>
+
+                <%
+                if(login) {
+                %>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a>欢迎您！<%= username %></a></li>
+                    <li <%if(active=="更改密码"){%> class="active" <%}%>><a href="/change_password">更改密码</a></li>
+                    <li <%if(active=="退出登陆"){%> class="active" <%}%> id="exit"><a href="/exit">退出登陆</a></li>
+                </ul>
+                
+                <%
+                }else{
+                %>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li <%if(active=="注册"){%> class="active" <%}%>><a href="/regist" class="firstUser-1">注册</a></li>
+                    <li <%if(active=="登录"){%> class="active" <%}%>><a href="/login" class="firstUser-2">登陆</a></li>
+                </ul>
+
+                <%
+                } 
+                %>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container firstUser-4">
         <div class="row">
             <% for(var i = 0 ; i < albums.length ; i++){ %>
                 <div class="col-xs-6 col-md-3">
@@ -34,15 +79,61 @@
 
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="js/intro.js"></script>
     <script type="text/javascript">
+
         $("#exit").click(function() {
             $.get("/exit", {}, function(result) {
+                console.log(result);
                 if(result == "1") {
-                    alter("退出登陆成功！");
-                    window.location = "/";
+                    alert("退出登陆成功！");
+                    window.location.href = "/";
                 }
             });
+        });
+
+        $(function(){
+            var firstUser = localStorage.getItem('firstUser');
+            if(firstUser !== "true") {
+                introJs().setOptions({
+                //对应的按钮
+                prevLabel:"Back←", 
+                nextLabel:"Next→",
+                skipLabel:"Skip",
+                //对应的数组，顺序出现每一步引导提示
+                steps: [
+                    {
+                        //第一步引导
+                        //这个属性类似于jquery的选择器， 可以通过jquery选择器的方式来选择你需要选中的对象进行指引
+                        element: '.firstUser-1',
+                        //这里是每个引导框具体的文字内容，中间可以编写HTML代码
+                        intro: '点击此按钮可以进行注册'
+                    },
+                    {
+                        //第二步引导
+                        element: '.firstUser-2',
+                        intro: '若已注册，直接点击登陆即可。'
+                    },
+                    {
+                        //第三步引导
+                        element: '.firstUser-3',
+                        intro: '跳转到上传图片页面，上传图片'
+                    },
+                    {
+                        //第三步引导
+                        element: '.firstUser-4',
+                        intro: '上传的图片会存放在文件夹里面'
+                    },
+                    {
+                        //第三步引导
+                        element: '.firstUser-5',
+                        intro: '在这里可留下您宝贵的建议'
+                    } 
+                ]
+                
+                }).start();
+                localStorage.setItem("firstUser", "true");
+            }
         });
 
 

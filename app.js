@@ -145,7 +145,7 @@ app.post("/delete", function(req, res, next) {
 app.get("/exit", function(req, res, next) {
 	req.session.login = false;
 	req.session.username = "";
-	res.send("1");	
+	res.send("1");
 });
 
 
