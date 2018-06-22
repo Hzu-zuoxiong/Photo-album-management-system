@@ -21,7 +21,7 @@ node app.js
 ```
 
 ## 效果演示
-![图片名称](/ReadMe/newPeople.gif)
-![图片名称](/ReadMe/registerLogin.gif)
-![图片名称](/ReadMe/picture.gif)
-![图片名称](/ReadMe/comment.gif)
+![新手指引](/ReadMe/newPeople.gif)
+![注册登录](/ReadMe/registerLogin.gif)
+![图片上传](/ReadMe/Picture.gif)
+![留言评论](/ReadMe/comment.gif)
